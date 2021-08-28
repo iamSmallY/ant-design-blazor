@@ -14,19 +14,19 @@
     {
         //Arrange
         JSInterop.Setup<AntDesign.JsInterop.DomRect>(JSInteropConstants.GetBoundingClientRect, _ => true)
-            .SetResult(new AntDesign.JsInterop.DomRect());        
+            .SetResult(new AntDesign.JsInterop.DomRect());
         bool handlerCalled = false;
         Action OnDataSourceChangedHandler = () => handlerCalled = true;
 
         var cut = Render<AntDesign.Select<int, Person>>(
-        @<AntDesign.Select DataSource="@_persons"            
+        @<AntDesign.Select DataSource="@_persons"
             LabelName="@nameof(Person.Name)"
             ValueName="@nameof(Person.Id)"
             Value="0"
             OnDataSourceChanged="OnDataSourceChangedHandler">
         </AntDesign.Select>);
         //Act
-        cut.SetParametersAndRender(parameters => parameters.Add(p => p.DataSource, new List<Person>()));        
+        cut.SetParametersAndRender(parameters => parameters.Add(p => p.DataSource, new List<Person>()));
         //Assert
         handlerCalled.Should().BeTrue();
     }
@@ -36,12 +36,12 @@
     {
         //Arrange
         JSInterop.Setup<AntDesign.JsInterop.DomRect>(JSInteropConstants.GetBoundingClientRect, _ => true)
-            .SetResult(new AntDesign.JsInterop.DomRect());        
+            .SetResult(new AntDesign.JsInterop.DomRect());
         bool handlerCalled = false;
         Action OnDataSourceChangedHandler = () => handlerCalled = true;
-        
+
         var cut = Render<AntDesign.Select<int, Person>>(
-        @<AntDesign.Select DataSource="@_persons"            
+        @<AntDesign.Select DataSource="@_persons"
             LabelName="@nameof(Person.Name)"
             ValueName="@nameof(Person.Id)"
             Value="0"
@@ -64,7 +64,7 @@
         Action OnDataSourceChangedHandler = () => handlerCalled = true;
         _persons = new List<Person> { _persons[0] };
         var cut = Render<AntDesign.Select<int, Person>>(
-        @<AntDesign.Select DataSource="@_persons"            
+        @<AntDesign.Select DataSource="@_persons"
             LabelName="@nameof(Person.Name)"
             ValueName="@nameof(Person.Id)"
             Value="0"
@@ -82,12 +82,12 @@
     {
         //Arrange
         JSInterop.Setup<AntDesign.JsInterop.DomRect>(JSInteropConstants.GetBoundingClientRect, _ => true)
-            .SetResult(new AntDesign.JsInterop.DomRect());        
+            .SetResult(new AntDesign.JsInterop.DomRect());
         bool handlerCalled = false;
         Action OnDataSourceChangedHandler = () => handlerCalled = true;
-        
+
         var cut = Render<AntDesign.Select<int, Person>>(
-        @<AntDesign.Select DataSource="@_persons"            
+        @<AntDesign.Select DataSource="@_persons"
             LabelName="@nameof(Person.Name)"
             ValueName="@nameof(Person.Id)"
             Value="0"
@@ -99,4 +99,26 @@
         //Assert
         handlerCalled.Should().BeFalse();
     }
-}  
+
+    [Fact]
+    public void Action_not_fired_when_datasource_be_null()
+    {
+        //Arrange
+        JSInterop.Setup<AntDesign.JsInterop.DomRect>(JSInteropConstants.GetBoundingClientRect, _ => true)
+            .SetResult(new AntDesign.JsInterop.DomRect());
+        bool handlerCalled = false;
+        Action OnDataSourceChangedHandler = () => handlerCalled = true;
+
+        var cut = Render<AntDesign.Select<int, Person>>(
+            @<AntDesign.Select DataSource="@_persons"
+                               LabelName="@nameof(Person.Name)"
+                               ValueName="@nameof(Person.Id)"
+                               Value="0"
+                               OnDataSourceChanged="OnDataSourceChangedHandler">
+            </AntDesign.Select>);
+        //Act
+        cut.SetParametersAndRender(parameters => parameters.Add(p => p.DataSource, null));
+        //Assert
+        handlerCalled.Should().BeTrue();
+    }
+}
